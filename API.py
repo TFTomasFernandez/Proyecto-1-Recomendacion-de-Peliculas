@@ -2,7 +2,7 @@ import pandas as pd
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 
-df_Main = pd.read_csv('C:/Users/tomif/Desktop/Proyecto_1/Datasets utilizados/Main.csv')
+df_Main = pd.read_csv('Datasets utilizados/Main.csv')
 app = FastAPI()
 ###############################################################################################################################################################################
 # Convertimos la columna 'release_date' a tipo datetime si no está en ese formato
