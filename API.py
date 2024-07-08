@@ -15,7 +15,7 @@ def cantidad_filmaciones_mes(mes:str=""):
     df_peliculas['release_date'] = pd.to_datetime(df_peliculas['release_date'], errors='coerce')
     
     # Filtramos películas que coincidan con el mes dado
-    peliculas_en_mes = df_peliculas[df_peliculas['release_date'].dt.month_name('es').str.lower() == mes.lower()]
+    peliculas_en_mes = df_peliculas[df_peliculas['release_date'].dt.month_name('es').lower() == mes.lower()]
     
     # Eliminamos duplicados basados en la columna 'movie_title' por ejemplo, ajusta según tus datos
     peliculas_en_mes_sin_duplicados = peliculas_en_mes.drop_duplicates(subset=['title'])
