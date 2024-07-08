@@ -63,7 +63,7 @@ def cantidad_filmaciones_dia(Dia:str=""):
 def score_titulo(titulo:str=""):
 
     # Filtramos el DataFrame por el título dado
-    pelicula = df_peliculas[df_peliculas['title'] == titulo]
+    pelicula = df_peliculas[df_peliculas['title'].str.lower() == titulo]
     
     # Verificaamos si se encontró la película
     if pelicula.empty:
@@ -82,7 +82,7 @@ def score_titulo(titulo:str=""):
 @app.get("/Votos")
 def votos_titulo(titulo:str=""):
     # Filtramos el DataFrame por el título dado
-    pelicula = df_peliculas[df_peliculas['title'] == titulo]
+    pelicula = df_peliculas[df_peliculas['title'].str.lower() == titulo]
     
     # Verificamos si se encontró la película y si cumple con la condición de votos
     if pelicula.empty:
@@ -185,7 +185,7 @@ def get_director(nombre_director: str = ""):
 @app.get("/Recomendaciones")
 def recomendar_peliculas(titulo: str=""):
     # Filtramos el dataset para encontrar la película dada
-    pelicula_dada = df_Main[df_Main['title'] == titulo]
+    pelicula_dada = df_Main[df_Main['title'].str.lower() == titulo]
     
     if pelicula_dada.empty:
         return f"No se encontró la película con el título: {titulo}"
