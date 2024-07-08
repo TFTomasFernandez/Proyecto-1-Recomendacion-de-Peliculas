@@ -7,7 +7,7 @@ app = FastAPI()
 ###############################################################################################################################################################################
 # Convertimos la columna 'release_date' a tipo datetime si no está en ese formato
 @app.get("/Meses")
-def cantidad_filmaciones_mes(mes:str=""):
+def cantidad_filmaciones_mes(mes:str):
     
     df_Main['release_date'] = pd.to_datetime(df_Main['release_date'], errors='coerce')
     
@@ -20,7 +20,7 @@ def cantidad_filmaciones_mes(mes:str=""):
     # Contar la cantidad de películas únicas en el mes
     cantidad = peliculas_en_mes_sin_duplicados.shape[0]
     
-    resultado =  str(cantidad)+ ' de películas fueron estrenadas en el mes de ' + str(mes)
+    resultado =  (cantidad)+ ' de películas fueron estrenadas en el mes de ' + (mes)
 
     return resultado
 
