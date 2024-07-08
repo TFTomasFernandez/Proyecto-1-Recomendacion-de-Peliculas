@@ -185,7 +185,7 @@ def get_director(nombre_director: str = ""):
 @app.get("/Recomendaciones")
 def recomendar_peliculas(titulo: str=""):
     # Filtramos el dataset para encontrar la película dada
-    pelicula_dada = df_Main[df_Main['title'].str.lower() == titulo]
+    pelicula_dada = df_Main[df_Main['title'] == titulo]
     
     if pelicula_dada.empty:
         return f"No se encontró la película con el título: {titulo}"
