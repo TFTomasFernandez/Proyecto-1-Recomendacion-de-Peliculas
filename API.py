@@ -2,7 +2,7 @@ import pandas as pd
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 
-df_Main = pd.read_csv('Datasets utilizados/Main.csv')
+df_main = pd.read_csv('Datasets utilizados/Main.csv')
 df_peliculas = pd.read_csv('Datasets utilizados/peliculas.csv')
 df_creditos_cast = pd.read_csv('Datasets utilizados/creditos_cast.csv')
 df_creditos_crew = pd.read_csv('Datasets utilizados/creditos_crew.csv')
@@ -183,9 +183,13 @@ def get_director(nombre_director: str = ""):
     
 ################################################################################################################################################################################
 @app.get("/Recomendaciones")
-def recomendar_peliculas(titulo: str=""):
-    # Filtramos el dataset para encontrar la película dada
-    pelicula_dada = df_Main[df_Main['title'] == titulo]
+def recomendar_peliculas(titulo: str):
+
+    # Convertimos el título dado a minúsculas
+    titulo_lower = titulo.lower()
+    
+    # Filtramos el dataset para encontrar la película dada (ignorando mayúsculas/minúsculas)
+    pelicula_dada = df_main[df_main['title'].str.lower() == titulo_lower]
     
     if pelicula_dada.empty:
         return f"No se encontró la película con el título: {titulo}"
@@ -194,13 +198,13 @@ def recomendar_peliculas(titulo: str=""):
     genero_dado = pelicula_dada.iloc[0]['genresname']
     
     # Filtramos el dataset para encontrar películas del mismo género
-    peliculas_similares = df_Main[df_Main['genresname'].str.contains(genero_dado, na=False)]
+    peliculas_similares = df_main[df_main['genresname'].str.contains(genero_dado, na=False)]
     
     # Ordenamos por popularidad predicha en orden descendente
     peliculas_ordenadas = peliculas_similares.sort_values(by='predicted_popularity', ascending=False)
     
     # Excluimos la película dada de las recomendaciones (si está en la lista)
-    peliculas_ordenadas = peliculas_ordenadas[peliculas_ordenadas['title'] != titulo]
+    peliculas_ordenadas = peliculas_ordenadas[peliculas_ordenadas['title'].str.lower() != titulo_lower]
     
     # Seleccionamos los títulos de las 5 mejores películas y mantener el orden
     recomendaciones = peliculas_ordenadas.head(5)[['title', 'genresname', 'predicted_popularity']].reset_index(drop=True)
@@ -208,13 +212,19 @@ def recomendar_peliculas(titulo: str=""):
     # Insertamos la película dada como primera fila en las recomendaciones
     recomendaciones = pd.concat([pelicula_dada[['title', 'genresname', 'predicted_popularity']], recomendaciones]).reset_index(drop=True)
     
-    # Preparamos el mensaje final
-    mensaje = (f"Titulo elegido: {titulo}"
-           f"Recomendaciones:"
-           + "\n".join([f"{idx}. {row['title']} / Género: {row['genresname']} / Popularidad predicha: {row['predicted_popularity']}"
-                        for idx, row in recomendaciones.iloc[1:].iterrows()]) )
+    # Manejamos el caso donde no se encontró la película
+    if isinstance(recomendaciones, str):
+        print(recomendaciones)
+    else:
+        # Imprimimos la película seleccionada y las recomendaciones ordenadas por popularidad
+        print(f"La película que eligió es: {recomendaciones.iloc[0]['title']} / Género: {recomendaciones.iloc[0]['genresname']} / Popularidad predicha: {recomendaciones.iloc[0]['predicted_popularity']}\n")
+        print("Sus películas recomendadas son:\n")
+        for idx, row in recomendaciones.iloc[1:].iterrows():
+            print(f"{idx}. {row['title']} / Género: {row['genresname']} / Popularidad predicha: {row['predicted_popularity']}")
+            print("\n")
 
-    return mensaje
+    return recomendaciones
+
 
 
 ##############################################################################################################################################################################
