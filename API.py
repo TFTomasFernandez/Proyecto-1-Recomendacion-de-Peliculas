@@ -89,7 +89,7 @@ def votos_titulo(titulo:str=""):
         return f"No se encontró información para '{titulo}'"
     
     if pelicula['vote_count'].iloc[0] < 1000:
-        return f"La película '{titulo}' no cumple con el mínimo de 2000 valoraciones."
+        return f"La película '{titulo}' no cumple con el mínimo de 1000 valoraciones."
     
     # Obtenemos los datos de la película encontrada
     titulo = pelicula['title'].iloc[0]
