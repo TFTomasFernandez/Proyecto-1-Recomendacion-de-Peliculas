@@ -10,22 +10,51 @@ app = FastAPI()
 ###############################################################################################################################################################################
 # Convertimos la columna 'release_date' a tipo datetime si no está en ese formato
 @app.get("/Meses")
-def cantidad_filmaciones_mes(mes:str=""):
-    # Convertimos la columna 'release_date' a tipo datetime si no está en ese formato
-    df_peliculas['release_date'] = pd.to_datetime(df_peliculas['release_date'], errors='coerce')
+def cantidad_filmaciones_mes(mes: str): 
+    """
+    Devuelve la cantidad de películas estrenadas en un Mes específico en español, con estado 'released'.
     
-    # Filtramos películas que coincidan con el mes dado
-    peliculas_en_mes = df_peliculas[df_peliculas['release_date'].dt.month_name('es').str.lower() == mes.lower()]
-    
-    # Eliminamos duplicados basados en la columna 'movie_title' por ejemplo, ajusta según tus datos
-    peliculas_en_mes_sin_duplicados = peliculas_en_mes.drop_duplicates(subset=['title'])
-    
-    # Contamos la cantidad de películas únicas en el mes
-    cantidad = peliculas_en_mes_sin_duplicados.shape[0]
+    Parameteros:
+    mes (str): Debera ingresar un mes en español
 
-    resultado =  str(cantidad)+ ' de películas fueron estrenadas en el mes de ' + str(mes)
-
-    return resultado
+    Returns:
+    str: Una cadena con la cantidad de películas estrenadas en el Mes especificado.
+    """
+    #Mapeo de meses en español a numeros para utulizar funcion day of the week de pandas
+    meses = {
+    'enero': 1,
+    'febrero': 2,
+    'marzo': 3,
+    'abril': 4,
+    'mayo': 5,
+    'junio': 6,
+    'julio': 7,
+    'agosto': 8,
+    'septiembre': 9,
+    'octubre': 10,
+    'noviembre': 11,
+    'diciembre': 12
+}
+    # Formatear la columna de release_date a formato datatime. 
+    df_peliculas['release_date']= pd.to_datetime(df_peliculas['release_date'],format= '%Y-%m-%d')
+    # Convertir el nombre del mes a minúsculas para asegurar coincidencia
+    mes = mes.lower()
+    
+    # Verificar si el mes ingresado es válido, de lo contrario arroja error.
+    if mes not in meses:
+        raise HTTPException(status_code=400, detail=f"Mes ingresado '{mes}' no es válido. Por favor ingrese un mes en Español.")
+    
+    # Obtener el número del mes
+    mes_numero = meses[mes]
+    
+    # Contar las películas estrenadas en el mes especificado, que hayan sido estrenadas
+    peliculas_filtradas = df_peliculas[
+        (df_peliculas['release_date'].dt.month == mes_numero)
+    ]
+    
+    cantidad_peliculas = len(peliculas_filtradas)
+    
+    return {"mes": mes, "cantidad_peliculas": cantidad_peliculas} 
 
 ################################################################################################################################################################################
 # Función para contar la cantidad de películas estrenadas en un día específico
@@ -227,5 +256,5 @@ def recomendar_peliculas(titulo: str):
 
 
 
-##############################################################################################################################################################################
+###########################################################################################################################################################################
 
