@@ -20,9 +20,9 @@ def cantidad_filmaciones_mes(mes:str=""):
     # Contar la cantidad de películas únicas en el mes
     cantidad = peliculas_en_mes_sin_duplicados.shape[0]
     
-    resultado =  str(cantidad)+ ' de películas fueron estrenadas en el mes de ' + str(mes)
+    return  str(cantidad)+ ' de películas fueron estrenadas en el mes de ' + str(mes)
 
-    return resultado
+    
 
 ################################################################################################################################################################################
 # Función para contar la cantidad de películas estrenadas en un día específico
