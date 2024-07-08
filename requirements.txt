@@ -6,3 +6,4 @@ pip
 urllib3
 uvicorn
 pandas
+pydantic
