@@ -1,8 +1,8 @@
-fastapi==0.111.0
-fastapi-cli==0.0.4
-networkx==3.3
-numpy==1.26.4
-pip==24.1
-urllib3==2.2.1
-uvicorn==0.30.1
-pandas==2.2.1
+fastapi
+fastapi-cli
+networkx
+numpy
+pip
+urllib3
+uvicorn
+pandas
