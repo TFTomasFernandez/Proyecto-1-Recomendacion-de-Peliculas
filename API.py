@@ -11,16 +11,7 @@ app = FastAPI()
 # Convertimos la columna 'release_date' a tipo datetime si no está en ese formato
 @app.get("/Meses")
 def cantidad_filmaciones_mes(mes: str): 
-    """
-    Devuelve la cantidad de películas estrenadas en un Mes específico en español, con estado 'released'.
-    
-    Parameteros:
-    mes (str): Debera ingresar un mes en español
-
-    Returns:
-    str: Una cadena con la cantidad de películas estrenadas en el Mes especificado.
-    """
-    #Mapeo de meses en español a numeros para utulizar funcion day of the week de pandas
+   #Mapeo de meses en español a numeros para utulizar funcion day of the week de pandas
     meses = {
     'enero': 1,
     'febrero': 2,
@@ -34,7 +25,7 @@ def cantidad_filmaciones_mes(mes: str):
     'octubre': 10,
     'noviembre': 11,
     'diciembre': 12
-}
+    }
     # Formatear la columna de release_date a formato datatime. 
     df_peliculas['release_date']= pd.to_datetime(df_peliculas['release_date'],format= '%Y-%m-%d')
     # Convertir el nombre del mes a minúsculas para asegurar coincidencia
