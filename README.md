@@ -143,7 +143,7 @@ En resumen, este método proporciona una funcionalidad para recomendar película
 2. Se creó un archivo de configuración `requirements.txt` con las dependencias necesarias para el proyecto.
 4. Se realizó el despliegue del proyecto en Render, asegurando que la API estuviera disponible en línea.
 
-
+Render link: (https://proyecto-1-nf0d.onrender.com/docs)
 
 **`Video`**: Necesitas que al equipo le quede claro que tus herramientas funcionan realmente! Haces un video mostrando el resultado de las consultas propuestas y de tu modelo de ML entrenado!
 
